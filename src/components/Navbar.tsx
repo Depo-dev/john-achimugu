@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import PageTransition, { type PageTransitionHandle } from './PageTransition'
 
@@ -22,16 +22,37 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [progress, setProgress] = useState(0)
   const [activeId, setActiveId] = useState('home')
+  const [collapsed, setCollapsed] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
   const transitionRef = useRef<PageTransitionHandle>(null)
+  const lastY = useRef(0)
+
+  const shellRef = useRef<HTMLDivElement>(null)
+  const expandedRef = useRef<HTMLDivElement>(null)
+  const pillRef = useRef<HTMLDivElement>(null)
+  const expandedWrapRef = useRef<HTMLDivElement>(null)
+  const pillWrapRef = useRef<HTMLDivElement>(null)
+  const hasPlaced = useRef(false)
+  const panelWasOpen = useRef(false)
 
   useEffect(() => {
     function onScroll() {
       const doc = document.documentElement
       const max = doc.scrollHeight - doc.clientHeight
-      const pct = max > 0 ? Math.min(100, Math.round((window.scrollY / max) * 100)) : 0
+      const y = window.scrollY
+      const pct = max > 0 ? Math.min(100, Math.round((y / max) * 100)) : 0
       setProgress(pct)
-      setOpen(false)
+
+      const goingDown = y > lastY.current
+      if (y <= 24) {
+        setCollapsed(false)
+      } else if (goingDown) {
+        setCollapsed(true)
+        setOpen(false)
+      } else {
+        setCollapsed(false)
+      }
+      lastY.current = y
 
       const sections = NAV_ITEMS.map((item) => document.getElementById(item.id)).filter(
         (el): el is HTMLElement => !!el,
@@ -48,22 +69,91 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Morph the shell between the expanded-bar rect and the pill rect.
+  useLayoutEffect(() => {
+    const shell = shellRef.current
+    const expandedWrap = expandedWrapRef.current
+    const pillWrap = pillWrapRef.current
+    if (!shell || !expandedWrap || !pillWrap) return
+
+    // Measure both target geometries (both are kept in the DOM, laid out via
+    // fixed positioning so getBoundingClientRect reflects their true size).
+    const expandedRect = expandedRef.current!.getBoundingClientRect()
+    const pillRect = pillRef.current!.getBoundingClientRect()
+
+    const target = collapsed ? pillRect : expandedRect
+    const duration = hasPlaced.current ? 0.6 : 0
+    hasPlaced.current = true
+
+    gsap.to(shell, {
+      top: target.top,
+      left: target.left,
+      width: target.width,
+      height: target.height,
+      borderRadius: collapsed ? 28 : 0,
+      boxShadow: collapsed
+        ? '0 20px 50px -10px rgba(0,0,0,0.45)'
+        : '0 0px 0px 0px rgba(0,0,0,0)',
+      duration,
+      ease: 'power3.inOut',
+      overwrite: true,
+    })
+
+    gsap.to(expandedWrap, {
+      opacity: collapsed ? 0 : 1,
+      pointerEvents: collapsed ? 'none' : 'auto',
+      duration: collapsed ? 0.2 : 0.35,
+      delay: collapsed ? 0 : 0.25,
+      overwrite: true,
+    })
+    gsap.to(pillWrap, {
+      opacity: collapsed ? 1 : 0,
+      pointerEvents: collapsed ? 'auto' : 'none',
+      duration: collapsed ? 0.35 : 0.2,
+      delay: collapsed ? 0.25 : 0,
+      overwrite: true,
+    })
+  }, [collapsed])
+
   useEffect(() => {
-    if (!panelRef.current) return
+    const panel = panelRef.current
+    const shell = shellRef.current
+    const pillRect = pillRef.current
+    if (!panel || !shell || !pillRect) return
+    const wasOpen = panelWasOpen.current
+    panelWasOpen.current = open
+    if (!open && !wasOpen) return
+
     if (open) {
-      gsap.set(panelRef.current, { display: 'block' })
+      const pillTargetRect = pillRect.getBoundingClientRect()
+      gsap.set(panel, { display: 'block' })
+      gsap.set(shell, { width: pillTargetRect.width })
+      const panelHeight = panel.scrollHeight
+      const pillBaseHeight = pillTargetRect.height
+
       gsap.fromTo(
-        panelRef.current,
+        panel,
         { height: 0, opacity: 0 },
-        { height: 'auto', opacity: 1, duration: 0.45, ease: 'power3.out' },
+        { height: panelHeight, opacity: 1, duration: 0.45, ease: 'power3.out' },
       )
+      gsap.to(shell, {
+        height: pillBaseHeight + panelHeight,
+        duration: 0.45,
+        ease: 'power3.out',
+      })
     } else {
-      gsap.to(panelRef.current, {
+      const pillBaseHeight = pillRect.getBoundingClientRect().height
+      gsap.to(panel, {
         height: 0,
         opacity: 0,
         duration: 0.35,
         ease: 'power3.in',
-        onComplete: () => gsap.set(panelRef.current, { display: 'none' }),
+        onComplete: () => gsap.set(panel, { display: 'none' }),
+      })
+      gsap.to(shell, {
+        height: pillBaseHeight,
+        duration: 0.35,
+        ease: 'power3.in',
       })
     }
   }, [open])
@@ -77,97 +167,165 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-6 left-1/2 z-[70] w-[92%] max-w-md -translate-x-1/2 font-epilogue">
-      <div className="overflow-hidden rounded-[28px] bg-white p-2.5 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.45)]">
-        <div className="flex items-center justify-between rounded-3xl bg-black px-3 py-3">
-          <button
-            type="button"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            onClick={() => setOpen((v) => !v)}
-            className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-white/10"
-          >
-            <img
-              src={open ? '/images/Huge-icon.svg' : '/images/menu.svg'}
-              alt=""
-              className="h-5 w-5"
-            />
-          </button>
+      {/* Invisible reference layouts used purely for measuring target geometry */}
+      <div ref={expandedRef} className="fixed top-0 left-0 w-full" style={{ visibility: 'hidden' }}>
+        <div className="mx-auto max-w-6xl px-6 py-5 md:px-10">
+          <div className="h-[46px]" />
+        </div>
+      </div>
+      <div
+        ref={pillRef}
+        className="fixed top-6 left-1/2 w-[92%] max-w-md -translate-x-1/2"
+        style={{ visibility: 'hidden' }}
+      >
+        <div className="h-[80px]" />
+      </div>
 
-          <span className="rounded-full bg-neutral-700/80 px-4 py-1.5 text-sm font-medium text-white tabular-nums">
-            {progress}%
-          </span>
+      {/* The morphing shell */}
+      <div
+        ref={shellRef}
+        className="fixed z-[65] overflow-hidden bg-white"
+      >
+        {/* Expanded bar content */}
+        <div
+          ref={expandedWrapRef}
+          className="absolute inset-0 font-epilogue"
+        >
+          <div className="site-container flex h-full items-center justify-between border-x border-b border-neutral-200 px-6 md:px-10">
+            <span className="font-moonwalk text-lg tracking-wide text-black">JOHN ACHIMUGU</span>
 
-          <span className="pr-2 text-sm font-medium text-white">Menu</span>
+            <ul className="hidden items-center gap-7 md:flex">
+              {NAV_ITEMS.map((item) => {
+                const isActive = item.id === activeId
+                return (
+                  <li key={item.id}>
+                    <button
+                      type="button"
+                      onClick={() => scrollTo(item.id, item.label)}
+                      className="flex items-center gap-1.5 text-sm"
+                    >
+                      <span
+                        aria-hidden
+                        className={`inline-block h-3 w-3 shrink-0 ${isActive ? 'bg-lime' : 'bg-neutral-400'}`}
+                        style={{
+                          WebkitMaskImage: 'url(/images/asterisk.svg)',
+                          maskImage: 'url(/images/asterisk.svg)',
+                          WebkitMaskSize: 'contain',
+                          maskSize: 'contain',
+                          WebkitMaskRepeat: 'no-repeat',
+                          maskRepeat: 'no-repeat',
+                        }}
+                      />
+                      <span className={isActive ? 'font-semibold text-black' : 'text-neutral-500'}>
+                        {item.label}
+                      </span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+
+            <a
+              href="mailto:hello@johnachimugu.com"
+              className="flex items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+            >
+              <img src="/images/sms.svg" alt="" className="h-4 w-4 invert" />
+              Let's Talk
+            </a>
+          </div>
         </div>
 
-        <div ref={panelRef} className="hidden overflow-hidden px-3 pb-3">
-          <p className="pt-5 pb-4 text-xs text-neutral-400">Menu</p>
-          <ul className="flex flex-col gap-5">
-            {NAV_ITEMS.map((item) => {
-              const isActive = item.id === activeId
-              return (
-                <li key={item.id}>
-                  <button
-                    type="button"
-                    onClick={() => scrollTo(item.id, item.label)}
-                    className="flex items-center gap-2.5 text-left"
+        {/* Pill content */}
+        <div ref={pillWrapRef} className="absolute inset-x-0 top-0 p-2.5 font-epilogue opacity-0">
+            <div className="flex items-center justify-between rounded-3xl bg-black px-3 py-3">
+              <button
+                type="button"
+                aria-label={open ? 'Close menu' : 'Open menu'}
+                onClick={() => setOpen((v) => !v)}
+                className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-white/10"
+              >
+                <img
+                  src={open ? '/images/Huge-icon.svg' : '/images/menu.svg'}
+                  alt=""
+                  className="h-5 w-5"
+                />
+              </button>
+
+              <span className="rounded-full bg-neutral-700/80 px-4 py-1.5 text-sm font-medium text-white tabular-nums">
+                {progress}%
+              </span>
+
+              <span className="pr-2 text-sm font-medium text-white">Menu</span>
+            </div>
+
+            <div ref={panelRef} className="hidden overflow-hidden px-3 pb-3">
+              <p className="pt-5 pb-4 text-xs text-neutral-400">Menu</p>
+              <ul className="flex flex-col gap-5">
+                {NAV_ITEMS.map((item) => {
+                  const isActive = item.id === activeId
+                  return (
+                    <li key={item.id}>
+                      <button
+                        type="button"
+                        onClick={() => scrollTo(item.id, item.label)}
+                        className="flex items-center gap-2.5 text-left"
+                      >
+                        <span
+                          aria-hidden
+                          className={`inline-block h-[18px] w-[18px] shrink-0 transition-colors ${
+                            isActive ? 'bg-lime' : 'bg-neutral-400'
+                          }`}
+                          style={{
+                            WebkitMaskImage: 'url(/images/asterisk.svg)',
+                            maskImage: 'url(/images/asterisk.svg)',
+                            WebkitMaskSize: 'contain',
+                            maskSize: 'contain',
+                            WebkitMaskRepeat: 'no-repeat',
+                            maskRepeat: 'no-repeat',
+                          }}
+                        />
+                        <span className={isActive ? 'font-semibold text-black' : 'text-black'}>
+                          {item.label}
+                        </span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+
+              <div className="my-5 border-t border-dashed border-neutral-300" />
+
+              <p className="pb-4 text-xs text-neutral-400">Socials</p>
+              <div className="flex gap-3 pb-2">
+                {SOCIALS.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={social.label}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 transition-colors hover:bg-neutral-700"
                   >
                     <span
                       aria-hidden
-                      className={`inline-block h-[18px] w-[18px] shrink-0 transition-colors ${
-                        isActive ? 'bg-lime' : 'bg-neutral-400'
-                      }`}
+                      className="h-4 w-4 bg-lime"
                       style={{
-                        WebkitMaskImage: 'url(/images/asterisk.svg)',
-                        maskImage: 'url(/images/asterisk.svg)',
+                        WebkitMaskImage: `url(${social.icon})`,
+                        maskImage: `url(${social.icon})`,
                         WebkitMaskSize: 'contain',
                         maskSize: 'contain',
                         WebkitMaskRepeat: 'no-repeat',
                         maskRepeat: 'no-repeat',
+                        WebkitMaskPosition: 'center',
+                        maskPosition: 'center',
                       }}
                     />
-                    <span className={isActive ? 'font-semibold text-black' : 'text-black'}>
-                      {item.label}
-                    </span>
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-
-          <div className="my-5 border-t border-dashed border-neutral-300" />
-
-          <p className="pb-4 text-xs text-neutral-400">Socials</p>
-          <div className="flex gap-3 pb-2">
-            {SOCIALS.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={social.label}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 transition-colors hover:bg-neutral-700"
-              >
-                <span
-                  aria-hidden
-                  className="h-4 w-4 bg-lime"
-                  style={{
-                    WebkitMaskImage: `url(${social.icon})`,
-                    maskImage: `url(${social.icon})`,
-                    WebkitMaskSize: 'contain',
-                    maskSize: 'contain',
-                    WebkitMaskRepeat: 'no-repeat',
-                    maskRepeat: 'no-repeat',
-                    WebkitMaskPosition: 'center',
-                    maskPosition: 'center',
-                  }}
-                />
-              </a>
-            ))}
-          </div>
+                  </a>
+                ))}
+              </div>
+            </div>
         </div>
       </div>
-      </nav>
       <PageTransition ref={transitionRef} />
     </>
   )
