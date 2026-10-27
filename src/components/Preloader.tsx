@@ -12,6 +12,10 @@ function randomChar() {
   return CHARS[Math.floor(Math.random() * CHARS.length)]
 }
 
+const GLYPH_OFFSET: Record<string, string> = {
+  J: '0.12em',
+}
+
 function buildReel(target: string, goesDown: boolean) {
   if (target === ' ' || target === ':') return [target]
   const steps = 8 + Math.floor(Math.random() * 4)
@@ -72,7 +76,7 @@ export default function Preloader({ onComplete }: Props) {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black overflow-hidden"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black overflow-hidden"
     >
       <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-30 mix-blend-screen">
         <filter id="noise">
@@ -104,7 +108,11 @@ export default function Preloader({ onComplete }: Props) {
                 <span
                   key={j}
                   className="flex items-center justify-center"
-                  style={{ height: `${ROW_EM}em`, lineHeight: `${ROW_EM}em` }}
+                  style={{
+                    height: `${ROW_EM}em`,
+                    lineHeight: `${ROW_EM}em`,
+                    transform: GLYPH_OFFSET[c] ? `translateY(${GLYPH_OFFSET[c]})` : undefined,
+                  }}
                 >
                   {c === ' ' ? ' ' : c}
                 </span>
