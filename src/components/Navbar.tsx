@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import PageTransition, { type PageTransitionHandle } from './PageTransition'
+import { useLocation } from 'react-router-dom'
+import { activeIdFor, useSiteNav } from '../lib/navContext'
 
 const NAV_ITEMS = [
   { id: 'home', label: 'home.' },
@@ -21,10 +22,12 @@ const SOCIALS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [progress, setProgress] = useState(0)
-  const [activeId, setActiveId] = useState('home')
+  const [spiedId, setSpiedId] = useState('home')
   const [collapsed, setCollapsed] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
-  const transitionRef = useRef<PageTransitionHandle>(null)
+  const goTo = useSiteNav()
+  const { pathname } = useLocation()
+  const activeId = activeIdFor(pathname) ?? spiedId
   const lastY = useRef(0)
 
   const shellRef = useRef<HTMLDivElement>(null)
@@ -61,7 +64,7 @@ export default function Navbar() {
         const rect = el.getBoundingClientRect()
         return rect.top <= 120 && rect.bottom > 120
       })
-      if (current) setActiveId(current.id)
+      if (current) setSpiedId(current.id)
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -158,11 +161,9 @@ export default function Navbar() {
     }
   }, [open])
 
-  function scrollTo(id: string, label: string) {
+  function scrollTo(id: string) {
     setOpen(false)
-    transitionRef.current?.play(label.replace(/\.$/, ''), () => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'instant' as ScrollBehavior })
-    })
+    goTo(id)
   }
 
   return (
@@ -201,7 +202,7 @@ export default function Navbar() {
                   <li key={item.id}>
                     <button
                       type="button"
-                      onClick={() => scrollTo(item.id, item.label)}
+                      onClick={() => scrollTo(item.id)}
                       className="flex items-center gap-1.5 text-sm"
                     >
                       <span
@@ -225,13 +226,14 @@ export default function Navbar() {
               })}
             </ul>
 
-            <a
-              href="mailto:hello@johnachimugu.com"
+            <button
+              type="button"
+              onClick={() => goTo('contact')}
               className="flex items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
             >
               <img src="/images/sms.svg" alt="" className="h-4 w-4 invert" />
               Let's Talk
-            </a>
+            </button>
           </div>
         </div>
 
@@ -267,7 +269,7 @@ export default function Navbar() {
                     <li key={item.id}>
                       <button
                         type="button"
-                        onClick={() => scrollTo(item.id, item.label)}
+                        onClick={() => scrollTo(item.id)}
                         className="flex items-center gap-2.5 text-left"
                       >
                         <span
@@ -326,7 +328,6 @@ export default function Navbar() {
             </div>
         </div>
       </div>
-      <PageTransition ref={transitionRef} />
     </>
   )
 }
