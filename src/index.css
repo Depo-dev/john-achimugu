@@ -1,1 +1,10 @@
 @import 'tailwindcss';
+@import './fonts.css';
+
+@theme {
+  --font-moonwalk: 'Moonwalk', sans-serif;
+  --font-epilogue: 'Epilogue', sans-serif;
+  --font-nunito-sans: 'Nunito Sans', sans-serif;
+
+  --color-lime: #D1EE70;
+}
