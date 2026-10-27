@@ -56,7 +56,7 @@ export default function Testimonials() {
 
         <div className="min-w-0 flex-1 pt-8">
           <figure key={cycle} className="animate-fade-in">
-            <blockquote className="text-sm leading-7 text-neutral-800 md:text-[15px]">
+            <blockquote className="text-sm leading-7 text-neutral-800 md:text-[0.9375rem]">
               {current.quote}
             </blockquote>
             <figcaption className="mt-6">

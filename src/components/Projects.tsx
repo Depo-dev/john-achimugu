@@ -96,7 +96,7 @@ export default function Projects() {
         </p>
         <div className="mt-2 flex items-start gap-2">
           <h2 className="font-moonwalk text-3xl text-black md:text-4xl">MISSION CONTROL</h2>
-          <span className="mt-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-600">
+          <span className="mt-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[0.625rem] font-medium text-neutral-600">
             {PROJECTS.length}
           </span>
         </div>
@@ -119,7 +119,7 @@ export default function Projects() {
                 }`}
               >
                 {f}
-                <sup className="ml-0.5 text-[9px]">{counts[f]}</sup>
+                <sup className="ml-0.5 text-[0.5625rem]">{counts[f]}</sup>
               </button>
             )
           })}

@@ -9,12 +9,18 @@
   --color-lime: #D1EE70;
 }
 
+@media (min-width: 48rem) {
+  html {
+    font-size: 120%;
+  }
+}
+
 body {
   background-color: #ffffff;
 }
 
 @utility site-container {
-  width: min(100% - 2 * clamp(16px, 5.5vw, 140px), 1760px);
+  width: min(100% - 2 * clamp(16px, 5.5vw, 140px), 110rem);
   margin-inline: auto;
 }
 

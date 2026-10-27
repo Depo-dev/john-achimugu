@@ -90,7 +90,7 @@ export default function Navbar() {
       left: target.left,
       width: target.width,
       height: target.height,
-      borderRadius: collapsed ? 28 : 0,
+      borderRadius: collapsed ? 1.75 * parseFloat(getComputedStyle(document.documentElement).fontSize) : 0,
       boxShadow: collapsed
         ? '0 20px 50px -10px rgba(0,0,0,0.45)'
         : '0 0px 0px 0px rgba(0,0,0,0)',
@@ -170,7 +170,7 @@ export default function Navbar() {
       {/* Invisible reference layouts used purely for measuring target geometry */}
       <div ref={expandedRef} className="fixed top-0 left-0 w-full" style={{ visibility: 'hidden' }}>
         <div className="mx-auto max-w-6xl px-6 py-5 md:px-10">
-          <div className="h-[46px]" />
+          <div className="h-[2.875rem]" />
         </div>
       </div>
       <div
@@ -178,7 +178,7 @@ export default function Navbar() {
         className="fixed top-6 left-1/2 w-[92%] max-w-md -translate-x-1/2"
         style={{ visibility: 'hidden' }}
       >
-        <div className="h-[80px]" />
+        <div className="h-20" />
       </div>
 
       {/* The morphing shell */}
@@ -272,7 +272,7 @@ export default function Navbar() {
                       >
                         <span
                           aria-hidden
-                          className={`inline-block h-[18px] w-[18px] shrink-0 transition-colors ${
+                          className={`inline-block size-[1.125rem] shrink-0 transition-colors ${
                             isActive ? 'bg-lime' : 'bg-neutral-400'
                           }`}
                           style={{
