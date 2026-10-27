@@ -1,64 +1,6 @@
 import Asterisk from './Asterisk'
-
-type Entry = {
-  name: string
-  logo: string
-  role: string
-  location?: string
-  period: string
-}
-
-const EDUCATION: Entry[] = [
-  {
-    name: 'University Of Nigeria Nsukka',
-    logo: 'unn.svg',
-    role: 'MSc. Biochemistry',
-    period: '2018 - 2024',
-  },
-]
-
-const WORK: Entry[] = [
-  { name: 'Prudiva', logo: 'prudiva.svg', role: 'Lead Product & Brand Designer', location: 'Lagos, Nigeria', period: '2026 - Present' },
-  { name: 'FloatMerchant', logo: 'floatmerchant.svg', role: 'Lead Product & Brand Designer', location: 'Lagos, Nigeria', period: '2025 - Present' },
-  { name: 'Luvira', logo: 'luvira.svg', role: 'Lead Product & Brand Designer', location: 'Virginia, United States', period: '2025 - 2026' },
-  { name: 'Reset VR', logo: 'resetvr.svg', role: 'VR Designer', location: 'Virginia, United States', period: '2025 - 2026' },
-  { name: 'DartX', logo: 'dartx.svg', role: 'Senior Product & Brand Designer', location: 'Lagos, Nigeria', period: '2025 - 2026' },
-  { name: 'NetworkX.AI', logo: 'networkxai.png', role: 'Product Designer', location: 'Tennessee, United States', period: '2025 - 2025' },
-  { name: 'Oneway', logo: 'oneway.svg', role: 'Lead UI/UX Designer', location: 'Lagos, Nigeria', period: '2024 - 2025' },
-  { name: 'Ibx Exchange', logo: 'ibx.svg', role: 'Senior Product', location: 'Lagos, Nigeria', period: '2022 - 2025' },
-  { name: 'Browsio', logo: 'browsio.svg', role: 'Volunteer UI/UX Designer', location: 'United Kingdom', period: '2022 - 2025' },
-  { name: 'Ustacy', logo: 'ustacy.svg', role: 'Motion Designer', location: 'Lagos, Nigeria', period: '2022 - 2023' },
-  { name: 'Genesys Learnable', logo: 'genesys.svg', role: 'Intern Product Designer', location: 'Enugu, Nigeria', period: '2022 - 2023' },
-  { name: 'Nexbuy District', logo: 'nexbuy.svg', role: 'Intern UI/UX Designer', location: 'Enugu, Nigeria', period: '2020 - 2021' },
-]
-
-function EntryRow({ entry }: { entry: Entry }) {
-  return (
-    <li className="flex gap-3.5">
-      <img
-        src={`/images/${entry.logo}`}
-        alt=""
-        loading="lazy"
-        className="h-11 w-11 shrink-0 rounded-lg object-contain"
-      />
-      <div className="min-w-0 flex-1">
-        <div className="flex items-baseline justify-between gap-4">
-          <h4 className="font-semibold text-white">{entry.name}</h4>
-          <span className="shrink-0 text-sm text-neutral-400">{entry.period}</span>
-        </div>
-        <p className="mt-1.5 text-xs text-neutral-400">
-          {entry.role}
-          {entry.location && (
-            <>
-              <span className="mx-1.5 text-neutral-600">|</span>
-              <span className="text-lime">{entry.location}</span>
-            </>
-          )}
-        </p>
-      </div>
-    </li>
-  )
-}
+import ExperienceEntry from './ExperienceEntry'
+import { EDUCATION, WORK, type ExperienceEntry as Entry } from '../data/experience'
 
 function Column({ label, entries }: { label: string; entries: Entry[] }) {
   return (
@@ -69,7 +11,7 @@ function Column({ label, entries }: { label: string; entries: Entry[] }) {
       </p>
       <ul className="mt-6 flex flex-col gap-7">
         {entries.map((entry) => (
-          <EntryRow key={entry.name} entry={entry} />
+          <ExperienceEntry key={entry.name} entry={entry} theme="dark" />
         ))}
       </ul>
     </div>

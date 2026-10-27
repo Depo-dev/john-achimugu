@@ -1,4 +1,5 @@
 import Asterisk from './Asterisk'
+import { useSiteNav } from '../lib/navContext'
 
 const LINKS = ['home', 'life', 'projects', 'resume', 'contact']
 
@@ -11,6 +12,7 @@ const SOCIALS = [
 ]
 
 export default function Contact() {
+  const goTo = useSiteNav()
   return (
     <section
       id="contact"
@@ -21,13 +23,14 @@ export default function Contact() {
           Have a product that needs a <span className="font-moonwalk">CO-PILOT?</span>
         </p>
         <p className="mt-4 font-moonwalk text-2xl text-black md:text-3xl">LET'S WORK TOGETHER.</p>
-        <a
-          href="mailto:hello@johnachimugu.com"
+        <button
+          type="button"
+          onClick={() => goTo('contact')}
           className="mt-8 inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1.5 text-sm text-black transition-colors hover:bg-neutral-200"
         >
           <img src="/images/sms.svg" alt="" className="h-4 w-4" />
           Let's Talk
-        </a>
+        </button>
       </div>
 
       <div className="flex gap-16">
@@ -36,7 +39,7 @@ export default function Contact() {
             <li key={id}>
               <button
                 type="button"
-                onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => goTo(id)}
                 className="flex items-center gap-1.5 text-sm text-neutral-500 transition-colors hover:text-black"
               >
                 <Asterisk className="h-3 w-3 bg-neutral-400" />
