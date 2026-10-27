@@ -12,10 +12,6 @@ function randomChar() {
   return CHARS[Math.floor(Math.random() * CHARS.length)]
 }
 
-const GLYPH_OFFSET: Record<string, string> = {
-  J: '0.12em',
-}
-
 function buildReel(target: string, goesDown: boolean) {
   if (target === ' ' || target === ':') return [target]
   const steps = 8 + Math.floor(Math.random() * 4)
@@ -52,14 +48,13 @@ export default function Preloader({ onComplete }: Props) {
       const steps = reel.length - 1
       const goesDown = i % 2 === 1
 
-      if (goesDown) {
-        gsap.set(el, { y: `-${steps * ROW_EM}em` })
-      }
+      gsap.set(el, { y: goesDown ? `-${steps * ROW_EM}em` : '0em' })
 
       const flipTl = gsap.timeline()
-      for (let s = 0; s < steps; s++) {
+      for (let s = 1; s <= steps; s++) {
+        const rowIndex = goesDown ? steps - s : s
         flipTl.to(el, {
-          y: goesDown ? `+=${ROW_EM}em` : `-=${ROW_EM}em`,
+          y: `-${rowIndex * ROW_EM}em`,
           duration: STEP_DURATION,
           ease: 'power1.in',
         })
@@ -108,11 +103,7 @@ export default function Preloader({ onComplete }: Props) {
                 <span
                   key={j}
                   className="flex items-center justify-center"
-                  style={{
-                    height: `${ROW_EM}em`,
-                    lineHeight: `${ROW_EM}em`,
-                    transform: GLYPH_OFFSET[c] ? `translateY(${GLYPH_OFFSET[c]})` : undefined,
-                  }}
+                  style={{ height: `${ROW_EM}em`, lineHeight: `${ROW_EM}em` }}
                 >
                   {c === ' ' ? ' ' : c}
                 </span>
