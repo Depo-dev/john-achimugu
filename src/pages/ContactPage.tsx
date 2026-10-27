@@ -1,8 +1,6 @@
-import { lazy, Suspense, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import Contact from '../components/Contact'
 import { useLandOnSection } from '../lib/navContext'
-
-const RetroComputer = lazy(() => import('../components/RetroComputer'))
 
 const EMAIL = 'achimugunusa11@gmail.com'
 const PHONE = '+234 811 804 7150'
@@ -108,11 +106,13 @@ export default function ContactPage() {
         </div>
 
         <div>
-          <div className="aspect-[3/4] w-full max-w-md">
-            <Suspense fallback={<div className="h-full w-full rounded-2xl bg-neutral-100" />}>
-              <RetroComputer className="h-full w-full" />
-            </Suspense>
-          </div>
+          <img
+            src="/images/retro-mac.webp"
+            alt="Retro computer with an astronaut floating in space on its screen"
+            width={1100}
+            height={1524}
+            className="h-auto w-full max-w-md"
+          />
 
           <p className="mt-10 text-sm text-neutral-500">Contact Details</p>
           <a href={`mailto:${EMAIL}`} className="mt-3 block tracking-wide text-black hover:opacity-60">
