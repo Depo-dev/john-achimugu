@@ -34,7 +34,7 @@ export default function Hero() {
       <div className="site-container px-6 pb-16 md:px-10">
         <div className="mb-10 flex justify-end">
           <div className="flex items-center gap-2.5 rounded-full border border-neutral-200 py-1.5 pr-4 pl-1.5 text-sm">
-            <span className="rounded-full bg-lime px-3 py-1 font-moonwalk text-[11px] tracking-wide text-black uppercase">
+            <span className="rounded-full bg-lime px-3 py-1 font-moonwalk text-[0.6875rem] tracking-wide text-black uppercase">
               Mission Status
             </span>
             <span className="text-neutral-700">Available for new opportunities</span>

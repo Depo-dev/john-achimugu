@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 
-const SPACING = 14
-const BASE_RADIUS = 1.3
-const INFLUENCE = 140
+// Base sizes at a 16px root font; scaled to the actual root size at build time.
+const BASE_SPACING = 14
+const BASE_DOT = 1.3
+const BASE_INFLUENCE = 140
 const MAGNIFY = 0.35
 const GROW = 2.6
 
@@ -24,8 +25,15 @@ export default function DotField({ className = '' }: { className?: string }) {
     const pointer = { x: -9999, y: -9999, active: false }
     let frame = 0
     let running = false
+    let SPACING = BASE_SPACING
+    let BASE_RADIUS = BASE_DOT
+    let INFLUENCE = BASE_INFLUENCE
 
     function build() {
+      const scale = parseFloat(getComputedStyle(document.documentElement).fontSize) / 16
+      SPACING = BASE_SPACING * scale
+      BASE_RADIUS = BASE_DOT * scale
+      INFLUENCE = BASE_INFLUENCE * scale
       const rect = canvas!.getBoundingClientRect()
       const dpr = window.devicePixelRatio || 1
       width = rect.width
