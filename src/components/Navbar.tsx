@@ -37,6 +37,7 @@ export default function Navbar() {
   const pillWrapRef = useRef<HTMLDivElement>(null)
   const hasPlaced = useRef(false)
   const panelWasOpen = useRef(false)
+  const collapsedRef = useRef(collapsed)
 
   useEffect(() => {
     function onScroll() {
@@ -84,6 +85,7 @@ export default function Navbar() {
     const expandedRect = expandedRef.current!.getBoundingClientRect()
     const pillRect = pillRef.current!.getBoundingClientRect()
 
+    collapsedRef.current = collapsed
     const target = collapsed ? pillRect : expandedRect
     const duration = hasPlaced.current ? 0.6 : 0
     hasPlaced.current = true
@@ -143,6 +145,7 @@ export default function Navbar() {
         height: pillBaseHeight + panelHeight,
         duration: 0.45,
         ease: 'power3.out',
+        overwrite: 'auto',
       })
     } else {
       const pillBaseHeight = pillRect.getBoundingClientRect().height
@@ -153,17 +156,31 @@ export default function Navbar() {
         ease: 'power3.in',
         onComplete: () => gsap.set(panel, { display: 'none' }),
       })
-      gsap.to(shell, {
-        height: pillBaseHeight,
-        duration: 0.35,
-        ease: 'power3.in',
-      })
+      if (collapsedRef.current) {
+        gsap.to(shell, {
+          height: pillBaseHeight,
+          duration: 0.35,
+          ease: 'power3.in',
+          overwrite: 'auto',
+        })
+      }
     }
   }, [open])
 
   function scrollTo(id: string) {
     setOpen(false)
     goTo(id)
+  }
+
+  // Small screens: the bar hamburger morphs the bar into the pill with its menu open.
+  function openMenuFromBar() {
+    setCollapsed(true)
+    setOpen(true)
+  }
+
+  function toggleMenu() {
+    if (open && window.scrollY <= 24) setCollapsed(false)
+    setOpen((v) => !v)
   }
 
   return (
@@ -193,10 +210,17 @@ export default function Navbar() {
           className="absolute inset-0 font-epilogue"
         >
           <div className="site-container flex h-full items-center justify-between border-x border-b border-neutral-200 px-6 md:px-10">
-            <span className="font-moonwalk text-lg tracking-wide text-black">JOHN ACHIMUGU</span>
+            <button
+              type="button"
+              aria-label="John Achimugu — home"
+              onClick={() => scrollTo('home')}
+              className="font-moonwalk text-lg tracking-wide text-black"
+            >
+              JOHN ACHIMUGU
+            </button>
 
             <ul className="hidden items-center gap-7 md:flex">
-              {NAV_ITEMS.map((item) => {
+              {NAV_ITEMS.filter((item) => item.id !== 'home').map((item) => {
                 const isActive = item.id === activeId
                 return (
                   <li key={item.id}>
@@ -229,10 +253,19 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => goTo('contact')}
-              className="flex items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+              className="hidden items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 md:flex"
             >
               <img src="/images/sms.svg" alt="" className="h-4 w-4 invert" />
               Let's Talk
+            </button>
+
+            <button
+              type="button"
+              aria-label="Open menu"
+              onClick={openMenuFromBar}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-black transition-colors hover:bg-neutral-800 md:hidden"
+            >
+              <img src="/images/menu.svg" alt="" className="h-5 w-5" />
             </button>
           </div>
         </div>
@@ -243,7 +276,7 @@ export default function Navbar() {
               <button
                 type="button"
                 aria-label={open ? 'Close menu' : 'Open menu'}
-                onClick={() => setOpen((v) => !v)}
+                onClick={toggleMenu}
                 className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-white/10"
               >
                 <img
@@ -325,6 +358,15 @@ export default function Navbar() {
                   </a>
                 ))}
               </div>
+
+              <button
+                type="button"
+                onClick={() => scrollTo('contact')}
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-black py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-800 md:hidden"
+              >
+                <img src="/images/sms.svg" alt="" className="h-4 w-4 invert" />
+                Let's Talk
+              </button>
             </div>
         </div>
       </div>

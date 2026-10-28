@@ -2,6 +2,9 @@ import { useState, type FormEvent } from 'react'
 import Contact from '../components/Contact'
 import { useLandOnSection } from '../lib/navContext'
 
+const prefersReducedMotion =
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 const EMAIL = 'achimugunusa11@gmail.com'
 const PHONE = '+234 811 804 7150'
 
@@ -106,13 +109,27 @@ export default function ContactPage() {
         </div>
 
         <div>
-          <img
-            src="/images/retro-mac.webp"
-            alt="Retro computer with an astronaut floating in space on its screen"
-            width={1100}
-            height={1524}
-            className="h-auto w-full max-w-md"
-          />
+          <div className="relative w-full max-w-md">
+            <img
+              src="/images/retro-mac.webp"
+              alt="Retro computer playing looping art animations"
+              width={1100}
+              height={1524}
+              className="h-auto w-full"
+            />
+            {/* Screen position measured from retro-mac.webp (797×532 px glass at 151,206). */}
+            <video
+              src="/images/art-loop.mp4"
+              poster="/images/art-loop-poster.webp"
+              autoPlay={!prefersReducedMotion}
+              loop
+              muted
+              playsInline
+              aria-hidden
+              className="absolute bg-black object-cover"
+              style={{ left: '13.73%', top: '13.52%', width: '72.45%', height: '34.91%', borderRadius: '1.6% / 2.4%' }}
+            />
+          </div>
 
           <p className="mt-10 text-sm text-neutral-500">Contact Details</p>
           <a href={`mailto:${EMAIL}`} className="mt-3 block tracking-wide text-black hover:opacity-60">

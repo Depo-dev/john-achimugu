@@ -1,28 +1,80 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Asterisk from './Asterisk'
 import { CATEGORIES, PROJECTS, type Project, type ProjectCategory } from '../data/projects'
 
 type Filter = 'All' | ProjectCategory
 
+const prefersReducedMotion =
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+function ComingSoon() {
+  return (
+    <span className="flex items-center gap-1.5 text-neutral-400">
+      <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+        <rect x="3" y="7" width="10" height="7" rx="1.5" />
+        <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
+      </svg>
+      Coming Soon
+    </span>
+  )
+}
+
+function ProjectMedia({ project }: { project: Project }) {
+  if (project.video) {
+    return (
+      <video
+        src={project.video.src}
+        poster={project.video.poster}
+        autoPlay={!prefersReducedMotion}
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        aria-label={project.title}
+        className="h-full w-full bg-black object-cover"
+      />
+    )
+  }
+  if (project.image) {
+    return <img src={project.image} alt={project.title} loading="lazy" className="h-full w-full object-contain" />
+  }
+  return <div className="h-full w-full bg-gradient-to-br from-neutral-200 to-neutral-300" />
+}
+
 function ProjectCard({ project }: { project: Project }) {
+  const caseStudyPath = project.caseStudyUrl?.startsWith('/') ? project.caseStudyUrl : undefined
+  const media = (
+    <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-neutral-100 p-5">
+      <ProjectMedia project={project} />
+    </div>
+  )
+
   return (
     <article className="flex flex-col">
-      <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-neutral-100 p-5">
-        {project.image ? (
-          <img
-            src={project.image}
-            alt={project.title}
-            loading="lazy"
-            className="h-full w-full object-cover grayscale transition duration-500 hover:grayscale-0"
-          />
-        ) : (
-          <div className="h-full w-full bg-gradient-to-br from-neutral-200 to-neutral-300" />
-        )}
-      </div>
+      {caseStudyPath ? (
+        <Link
+          to={caseStudyPath}
+          aria-label={`${project.title} case study`}
+          className="block transition-transform duration-300 hover:-translate-y-1"
+        >
+          {media}
+        </Link>
+      ) : (
+        media
+      )}
 
       <div className="mt-4 flex items-center gap-1.5">
         <Asterisk className="h-3.5 w-3.5 bg-black" />
-        <h3 className="text-base font-semibold text-black">{project.title}</h3>
+        <h3 className="text-base font-semibold text-black">
+          {caseStudyPath ? (
+            <Link to={caseStudyPath} className="hover:underline">
+              {project.title}
+            </Link>
+          ) : (
+            project.title
+          )}
+        </h3>
       </div>
 
       <div className="mt-1 flex items-center justify-between text-xs text-neutral-500">
@@ -33,17 +85,11 @@ function ProjectCard({ project }: { project: Project }) {
       <p className="mt-3 text-sm leading-relaxed text-neutral-500">{project.description}</p>
 
       <div className="mt-4 flex items-center justify-between text-xs">
-        {project.comingSoon ? (
-          <span className="flex items-center gap-1.5 text-neutral-400">
-            <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-              <rect x="3" y="7" width="10" height="7" rx="1.5" />
-              <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
-            </svg>
-            Coming Soon
-          </span>
+        {project.caseStudyUrl === 'soon' ? (
+          <ComingSoon />
         ) : project.caseStudyUrl ? (
-          <a
-            href={project.caseStudyUrl}
+          <Link
+            to={project.caseStudyUrl}
             className="flex items-center gap-1.5 font-medium text-black transition-opacity hover:opacity-60"
           >
             <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
@@ -51,11 +97,13 @@ function ProjectCard({ project }: { project: Project }) {
               <circle cx="8" cy="8" r="2" />
             </svg>
             View Case Study
-          </a>
+          </Link>
         ) : (
           <span />
         )}
-        {project.liveUrl && (
+        {project.liveUrl === 'soon' ? (
+          <ComingSoon />
+        ) : project.liveUrl && (
           <a
             href={project.liveUrl}
             target="_blank"
@@ -80,7 +128,7 @@ export default function ProjectGallery() {
   }, [])
 
   const visible = filter === 'All' ? PROJECTS : PROJECTS.filter((p) => p.categories.includes(filter))
-  const filters: Filter[] = ['All', ...CATEGORIES]
+  const filters: Filter[] = ['All', ...CATEGORIES.filter((c) => counts[c] > 0)]
 
   return (
     <div className="site-container px-6 pt-8 pb-20 md:px-10">
