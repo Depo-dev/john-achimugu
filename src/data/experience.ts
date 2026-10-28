@@ -21,7 +21,7 @@ export const WORK: ExperienceEntry[] = [
   { name: 'Luvira', logo: 'luvira.svg', role: 'Lead Product & Brand Designer', location: 'Virginia, United States', period: '2025 - 2026' },
   { name: 'Reset VR', logo: 'resetvr.svg', role: 'VR Designer', location: 'Virginia, United States', period: '2025 - 2026' },
   { name: 'DartX', logo: 'dartx.svg', role: 'Senior Product & Brand Designer', location: 'Lagos, Nigeria', period: '2025 - 2026' },
-  { name: 'NetworkX.AI', logo: 'networkxai.png', role: 'Product Designer', location: 'Tennessee, United States', period: '2025 - 2025' },
+  { name: 'NetworkX.AI', logo: 'networkxai-logo.png', role: 'Product Designer', location: 'Tennessee, United States', period: '2025 - 2025' },
   { name: 'Oneway', logo: 'oneway.svg', role: 'Lead UI/UX Designer', location: 'Lagos, Nigeria', period: '2024 - 2025' },
   { name: 'Ibx Exchange', logo: 'ibx.svg', role: 'Senior Product', location: 'Lagos, Nigeria', period: '2022 - 2025' },
   { name: 'Browsio', logo: 'browsio.svg', role: 'Volunteer UI/UX Designer', location: 'United Kingdom', period: '2022 - 2025' },

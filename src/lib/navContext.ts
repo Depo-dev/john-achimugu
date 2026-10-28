@@ -17,7 +17,9 @@ export function routeFor(id: string) {
 }
 
 export function activeIdFor(pathname: string) {
-  return Object.keys(PAGE_ROUTES).find((id) => id !== 'home' && PAGE_ROUTES[id] === pathname)
+  return Object.keys(PAGE_ROUTES).find(
+    (id) => id !== 'home' && (pathname === PAGE_ROUTES[id] || pathname.startsWith(`${PAGE_ROUTES[id]}/`)),
+  )
 }
 
 export function scrollToSection(id: string) {
