@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import gsap from 'gsap'
 
 export type PageTransitionHandle = {
-  play: (label: string, onCovered: () => void) => void
+  play: (label: string, onCovered: () => void, onDone?: () => void) => void
 }
 
 const PageTransition = forwardRef<PageTransitionHandle>((_, ref) => {
@@ -11,7 +11,7 @@ const PageTransition = forwardRef<PageTransitionHandle>((_, ref) => {
   const [label, setLabel] = useState('')
 
   useImperativeHandle(ref, () => ({
-    play(nextLabel, onCovered) {
+    play(nextLabel, onCovered, onDone) {
       setLabel(nextLabel)
       const overlay = overlayRef.current
       const labelEl = labelRef.current
@@ -30,7 +30,10 @@ const PageTransition = forwardRef<PageTransitionHandle>((_, ref) => {
           yPercent: -100,
           duration: 0.6,
           ease: 'power4.inOut',
-          onComplete: () => gsap.set(overlay, { display: 'none', yPercent: 100 }),
+          onComplete: () => {
+            gsap.set(overlay, { display: 'none', yPercent: 100 })
+            onDone?.()
+          },
         })
     },
   }))

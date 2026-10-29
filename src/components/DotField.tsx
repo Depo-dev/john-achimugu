@@ -9,7 +9,7 @@ const GROW = 2.6
 
 type Dot = { x: number; y: number; ox: number; oy: number; r: number }
 
-export default function DotField({ className = '' }: { className?: string }) {
+export default function DotField({ className = '', dark = false }: { className?: string; dark?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function DotField({ className = '' }: { className?: string }) {
       ctx!.clearRect(0, 0, width, height)
       for (const d of dots) {
         const lift = (d.r - BASE_RADIUS) / (GROW * BASE_RADIUS)
-        const shade = Math.round(212 - lift * 120)
+        const shade = Math.round(dark ? 58 + lift * 140 : 212 - lift * 120)
         ctx!.fillStyle = `rgb(${shade},${shade},${shade})`
         ctx!.beginPath()
         ctx!.arc(d.x + d.ox, d.y + d.oy, d.r, 0, Math.PI * 2)

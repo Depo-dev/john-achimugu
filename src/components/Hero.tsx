@@ -1,3 +1,4 @@
+import StickerTrail from './StickerTrail'
 const COMPANIES = ['Floatmerchant', 'Luvira', 'DartX', 'NetworkX', 'Ibx', 'Ustacky', 'Browiso']
 
 const TAGS = [
@@ -41,11 +42,13 @@ export default function Hero() {
           </div>
         </div>
 
-        <h1 className="max-w-4xl text-3xl leading-snug text-neutral-800 md:text-4xl">
-          Hi! I'm <span className="font-semibold text-black">John Achimugu</span>, a Product
-          Designer focused on turning complex ideas, business problems, and emerging technologies
-          into simple, intuitive, and meaningful digital experiences.
-        </h1>
+        <StickerTrail>
+          <h1 className="max-w-4xl text-3xl leading-snug text-neutral-800 md:text-4xl">
+            Hi! I'm <span className="font-semibold text-black">John Achimugu</span>, a Product
+            Designer focused on turning complex ideas, business problems, and emerging technologies
+            into simple, intuitive, and meaningful digital experiences.
+          </h1>
+        </StickerTrail>
 
         <p className="mt-8 text-sm text-neutral-400">
           currently @{' '}
