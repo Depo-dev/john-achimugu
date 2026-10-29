@@ -217,7 +217,7 @@ export default function Navbar() {
       {/* The morphing shell */}
       <div
         ref={shellRef}
-        className="fixed z-[65] overflow-hidden bg-white dark:bg-black"
+        className={`fixed z-[65] overflow-hidden bg-white ${collapsed ? '' : 'dark:bg-black'}`}
       >
         {/* Expanded bar content */}
         <div
