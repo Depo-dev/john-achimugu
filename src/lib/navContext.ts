@@ -12,6 +12,7 @@ const PAGE_ROUTES: Record<string, string> = {
   home: '/',
   life: '/life',
   projects: '/projects',
+  resume: '/resume',
   contact: '/contact',
 }
 

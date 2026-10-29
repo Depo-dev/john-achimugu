@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './fonts.css';
+@custom-variant dark (&:where(.theme-dark, .theme-dark *));
 
 @theme {
   --font-moonwalk: 'Moonwalk', sans-serif;
@@ -63,4 +64,19 @@ body {
 
 .animate-fade-in {
   animation: fade-in 0.5s ease-out;
+}
+
+html.theme-dark,
+html.theme-dark body {
+  background-color: #000;
+}
+
+.animate-marquee-slow {
+  animation: marquee 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-slow {
+    animation: none;
+  }
 }

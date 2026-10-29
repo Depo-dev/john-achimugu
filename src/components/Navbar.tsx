@@ -217,19 +217,19 @@ export default function Navbar() {
       {/* The morphing shell */}
       <div
         ref={shellRef}
-        className="fixed z-[65] overflow-hidden bg-white"
+        className="fixed z-[65] overflow-hidden bg-white dark:bg-black"
       >
         {/* Expanded bar content */}
         <div
           ref={expandedWrapRef}
           className="absolute inset-0 font-epilogue"
         >
-          <div className="site-container flex h-full items-center justify-between border-x border-b border-neutral-200 px-6 md:px-10">
+          <div className="site-container flex h-full items-center justify-between border-x border-b border-neutral-200 px-6 dark:border-neutral-800 md:px-10">
             <button
               type="button"
               aria-label="John Achimugu — home"
               onClick={() => scrollTo('home')}
-              className="font-moonwalk text-lg tracking-wide text-black"
+              className="font-moonwalk text-lg tracking-wide text-black dark:text-white"
             >
               JOHN ACHIMUGU
             </button>
@@ -256,7 +256,7 @@ export default function Navbar() {
                           maskRepeat: 'no-repeat',
                         }}
                       />
-                      <span className={isActive ? 'font-semibold text-black' : 'text-neutral-500'}>
+                      <span className={isActive ? 'font-semibold text-black dark:text-white' : 'text-neutral-500'}>
                         {item.label}
                       </span>
                     </button>
@@ -268,7 +268,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => goTo('contact')}
-              className="hidden items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 md:flex"
+              className="hidden items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 md:flex dark:bg-neutral-800 dark:hover:bg-neutral-700"
             >
               <img src="/images/sms.svg" alt="" className="h-4 w-4 invert" />
               Let's Talk
@@ -278,7 +278,7 @@ export default function Navbar() {
               type="button"
               aria-label="Open menu"
               onClick={openMenuFromBar}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-black transition-colors hover:bg-neutral-800 md:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-black transition-colors hover:bg-neutral-800 md:hidden dark:bg-neutral-800"
             >
               <img src="/images/menu.svg" alt="" className="h-5 w-5" />
             </button>

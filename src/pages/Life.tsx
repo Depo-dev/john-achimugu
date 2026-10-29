@@ -1,3 +1,4 @@
+import StickerTrail from '../components/StickerTrail'
 import Asterisk from '../components/Asterisk'
 import Contact from '../components/Contact'
 import ExperienceEntry from '../components/ExperienceEntry'
@@ -5,10 +6,11 @@ import { EDUCATION, WORK } from '../data/experience'
 import { useLandOnSection } from '../lib/navContext'
 
 // Drop photos into public/images/life/ and set `src` to show them instead of placeholders.
-const GALLERY: { src?: string; alt: string; className: string }[] = [
-  { alt: 'Lifestyle photo 1', className: 'aspect-[2/3]' },
-  { alt: 'Lifestyle photo 2', className: 'aspect-[7/5]' },
-  { alt: 'Lifestyle photo 3', className: 'aspect-[5/4]' },
+const GALLERY = [
+  { src: '/images/life/john1.webp', alt: 'Rainy view of a plane wing from the window seat', className: 'aspect-square' },
+  { src: '/images/life/john2.webp', alt: 'John on his phone at an outdoor cafe', className: 'aspect-[4/5]' },
+  { src: '/images/life/john3.webp', alt: 'Laptop running Out of Words beside a handheld console', className: 'aspect-[4/5]' },
+  { src: '/images/life/john4.webp', alt: 'Black and white shot of John’s desk setup', className: 'aspect-[4/5]' },
 ]
 
 function SectionHeader({ label, title, children }: { label: string; title: string; children?: React.ReactNode }) {
@@ -30,13 +32,15 @@ export default function Life() {
   return (
     <div className="font-epilogue">
       <section className="site-container border-b border-neutral-200 px-6 pt-36 pb-20 md:px-10">
-        <h1 className="max-w-5xl text-2xl leading-snug text-neutral-800 md:text-3xl">
-          I'm <span className="font-semibold text-black">John Achimugu</span>, a Product Designer
-          who enjoys turning complex problems into simple, thoughtful, and engaging digital
-          experiences. When I'm not designing, I'm usually somewhere between a good game, an
-          interesting movie, an anime episode, a gym session, a new destination, or a great
-          conversation with an interesting person.
-        </h1>
+        <StickerTrail>
+          <h1 className="max-w-5xl text-2xl leading-snug text-neutral-800 md:text-3xl">
+            I'm <span className="font-semibold text-black">John Achimugu</span>, a Product Designer
+            who enjoys turning complex problems into simple, thoughtful, and engaging digital
+            experiences. When I'm not designing, I'm usually somewhere between a good game, an
+            interesting movie, an anime episode, a gym session, a new destination, or a great
+            conversation with an interesting person.
+          </h1>
+        </StickerTrail>
 
         <div className="mt-12 max-w-3xl space-y-6 text-sm leading-7 text-neutral-500 md:ml-[12%]">
           <p>
@@ -62,19 +66,21 @@ export default function Life() {
           I'm naturally curious, and I enjoy discovering things that give me a different perspective
           on the world.
         </SectionHeader>
-        <div className="grid grid-cols-2 items-start gap-3 px-6 pb-20 md:grid-cols-[1fr_1.35fr_1.9fr] md:gap-2 md:px-10">
-          {GALLERY.map((photo, i) => (
-            <div
-              key={photo.alt}
-              className={`overflow-hidden bg-neutral-200 ${photo.className} ${i === 2 ? 'col-span-2 md:col-span-1' : ''}`}
-            >
-              {photo.src ? (
-                <img src={photo.src} alt={photo.alt} loading="lazy" className="h-full w-full object-cover grayscale" />
-              ) : (
-                <div className="h-full w-full bg-gradient-to-br from-neutral-200 to-neutral-400" />
-              )}
+        <div className="px-6 pb-20 md:px-10">
+          <div className="@container overflow-hidden">
+            <div className="animate-marquee-slow flex w-max items-start">
+              {[...GALLERY, ...GALLERY].map((photo, i) => (
+                <div key={i} className="w-[calc(100cqw/3+0.75rem)] shrink-0 pr-3">
+                  <img
+                    src={photo.src}
+                    alt={i < GALLERY.length ? photo.alt : ''}
+                    aria-hidden={i >= GALLERY.length}
+                    className={`${photo.className} w-full object-cover`}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
