@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useLocation } from 'react-router-dom'
-import { activeIdFor, useSiteNav } from '../lib/navContext'
+import { activeIdFor, NAV_TRANSITION_EVENT, useSiteNav } from '../lib/navContext'
 
 const NAV_ITEMS = [
   { id: 'home', label: 'home.' },
@@ -38,6 +38,7 @@ export default function Navbar() {
   const hasPlaced = useRef(false)
   const panelWasOpen = useRef(false)
   const collapsedRef = useRef(collapsed)
+  const transitioning = useRef(false)
 
   useEffect(() => {
     function onScroll() {
@@ -48,7 +49,9 @@ export default function Navbar() {
       setProgress(pct)
 
       const goingDown = y > lastY.current
-      if (y <= 24) {
+      if (transitioning.current) {
+        // Page transitions own the collapse/expand; ignore the jump they cause.
+      } else if (y <= 24) {
         setCollapsed(false)
       } else if (goingDown) {
         setCollapsed(true)
@@ -68,9 +71,21 @@ export default function Navbar() {
       if (current) setSpiedId(current.id)
     }
 
+    function onTransition(e: Event) {
+      const phase = (e as CustomEvent<'start' | 'end'>).detail
+      transitioning.current = phase === 'start'
+      setOpen(false)
+      setCollapsed(phase === 'start')
+      lastY.current = window.scrollY
+    }
+
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener(NAV_TRANSITION_EVENT, onTransition)
     onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener(NAV_TRANSITION_EVENT, onTransition)
+    }
   }, [])
 
   // Morph the shell between the expanded-bar rect and the pill rect.
@@ -95,7 +110,7 @@ export default function Navbar() {
       left: target.left,
       width: target.width,
       height: target.height,
-      borderRadius: collapsed ? 1.75 * parseFloat(getComputedStyle(document.documentElement).fontSize) : 0,
+      borderRadius: collapsed ? pillRect.height / 2 : 0,
       boxShadow: collapsed
         ? '0 20px 50px -10px rgba(0,0,0,0.45)'
         : '0 0px 0px 0px rgba(0,0,0,0)',
@@ -272,7 +287,20 @@ export default function Navbar() {
 
         {/* Pill content */}
         <div ref={pillWrapRef} className="absolute inset-x-0 top-0 p-2.5 font-epilogue opacity-0">
-            <div className="flex items-center justify-between rounded-3xl bg-black px-3 py-3">
+            <div className="relative flex items-center justify-between rounded-full bg-black px-3 py-3">
+              <button
+                type="button"
+                aria-label="John Achimugu — home"
+                onClick={() => scrollTo('home')}
+                className="flex h-9 items-center px-3 font-moonwalk text-lg tracking-wide text-white"
+              >
+                JA
+              </button>
+
+              <span className="absolute left-1/2 -translate-x-1/2 rounded-full bg-neutral-700/80 px-4 py-1.5 text-sm font-medium text-white tabular-nums">
+                {progress}%
+              </span>
+
               <button
                 type="button"
                 aria-label={open ? 'Close menu' : 'Open menu'}
@@ -285,12 +313,6 @@ export default function Navbar() {
                   className="h-5 w-5"
                 />
               </button>
-
-              <span className="rounded-full bg-neutral-700/80 px-4 py-1.5 text-sm font-medium text-white tabular-nums">
-                {progress}%
-              </span>
-
-              <span className="pr-2 text-sm font-medium text-white">Menu</span>
             </div>
 
             <div ref={panelRef} className="hidden overflow-hidden px-3 pb-3">

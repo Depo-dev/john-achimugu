@@ -79,7 +79,7 @@ function ProjectCard({ project }: { project: Project }) {
 
       <div className="mt-1 flex items-center justify-between text-xs text-neutral-500">
         <span>{project.tags.join(' • ')}</span>
-        <span>{project.year}</span>
+        {project.year && <span>{project.year}</span>}
       </div>
 
       <p className="mt-3 text-sm leading-relaxed text-neutral-500">{project.description}</p>
@@ -118,7 +118,7 @@ function ProjectCard({ project }: { project: Project }) {
   )
 }
 
-export default function ProjectGallery() {
+export default function ProjectGallery({ limit }: { limit?: number }) {
   const [filter, setFilter] = useState<Filter>('All')
 
   const counts = useMemo(() => {
@@ -152,10 +152,24 @@ export default function ProjectGallery() {
       </div>
 
       <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-        {visible.map((project, i) => (
+        {(limit ? visible.slice(0, limit) : visible).map((project, i) => (
           <ProjectCard key={`${project.title}-${i}`} project={project} />
         ))}
       </div>
+
+      {limit && visible.length > limit && (
+        <div className="mt-14 flex justify-center">
+          <Link
+            to="/projects"
+            className="flex items-center gap-3 rounded-full bg-neutral-100 px-6 py-3 text-base text-black transition-colors hover:bg-neutral-200"
+          >
+            <svg viewBox="0 0 20 20" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+              <path d="M5 13 13 5M6 5h7v7M4 17h12" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            See More Projects
+          </Link>
+        </div>
+      )}
     </div>
   )
 }

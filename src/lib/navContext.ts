@@ -3,6 +3,9 @@ import { useLocation } from 'react-router-dom'
 
 export type GoTo = (id: string) => void
 
+// Fired on window with detail 'start' | 'end' around every page transition.
+export const NAV_TRANSITION_EVENT = 'site-nav-transition'
+
 export const NavContext = createContext<GoTo>(() => {})
 
 const PAGE_ROUTES: Record<string, string> = {

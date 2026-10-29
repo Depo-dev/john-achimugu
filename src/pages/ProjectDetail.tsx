@@ -60,7 +60,32 @@ export default function ProjectDetail() {
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
           <h1 className="text-4xl font-semibold text-black md:text-5xl">{study.title}</h1>
-          {study.liveUrl === 'soon' ? (
+          {study.stores ? (
+            <div className="flex flex-wrap gap-2">
+              <a
+                href={study.stores.apple}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 rounded-full bg-neutral-100 px-4 py-2 text-sm text-black transition-colors hover:bg-neutral-200"
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
+                  <path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.8c-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.8zM14.1 5.8c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z" />
+                </svg>
+                Get On Apple Store
+              </a>
+              <a
+                href={study.stores.play}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
+                  <path d="M4 2.5v19l10-9.5L4 2.5zm11.4 10.8L6.6 21.7l11.2-6.4-2.4-2zm0-2.6 2.4-2L6.6 2.3l8.8 8.4zm3.5-1.6-2.6 2.4 2.6 2.4 2.6-1.5c.8-.5.8-1.3 0-1.8l-2.6-1.5z" />
+                </svg>
+                Get On Play Store
+              </a>
+            </div>
+          ) : study.liveUrl === 'soon' ? (
             <span className="flex items-center gap-2 rounded-full bg-neutral-100 px-3.5 py-1.5 text-sm text-neutral-400">
               <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
                 <rect x="3" y="7" width="10" height="7" rx="1.5" />
@@ -100,7 +125,7 @@ export default function ProjectDetail() {
       </section>
 
       <section className="site-container space-y-16 border-b border-neutral-200 px-6 py-16 md:px-10">
-        <Story label="The Big Question" paragraphs={study.bigQuestion} />
+        {study.bigQuestion.length > 0 && <Story label="The Big Question" paragraphs={study.bigQuestion} />}
         <Story label="Description" paragraphs={study.description} />
         <Story label="The Objective" paragraphs={study.objective} />
       </section>

@@ -21,7 +21,7 @@ export default function Projects() {
         </p>
       </div>
 
-      <ProjectGallery />
+      <ProjectGallery limit={9} />
     </section>
   )
 }
