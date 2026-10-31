@@ -14,6 +14,7 @@ import { useLenis } from './lib/useLenis'
 
 function App() {
   const [loading, setLoading] = useState(true)
+  const [navReady, setNavReady] = useState(false)
   useLenis()
   const { pathname } = useLocation()
   useEffect(() => {
@@ -22,8 +23,10 @@ function App() {
 
   return (
     <NavProvider>
-      {loading && <Preloader onComplete={() => setLoading(false)} />}
-      {!loading && <Navbar />}
+      {loading && (
+        <Preloader onReveal={() => setNavReady(true)} onComplete={() => setLoading(false)} />
+      )}
+      {(navReady || !loading) && <Navbar />}
       <div
         aria-hidden
         className="site-container pointer-events-none fixed inset-y-0 left-0 right-0 z-50 border-x border-neutral-200 dark:border-neutral-800"
