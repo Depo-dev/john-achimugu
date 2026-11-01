@@ -8,7 +8,7 @@ export default function Footer() {
   const dark = useLocation().pathname === '/resume'
   return (
     <footer className="site-container bg-white font-epilogue dark:bg-black">
-      <div className="h-40 border-b border-neutral-200 px-3 py-4 md:h-44 dark:border-neutral-800">
+      <div className="h-80 border-b border-neutral-200 px-3 py-4 md:h-112 dark:border-neutral-800">
         <DotField key={String(dark)} dark={dark} />
       </div>
       <div className="flex items-center justify-between px-6 py-6 text-xs text-neutral-500 md:px-10">
