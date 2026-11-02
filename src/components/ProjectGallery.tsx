@@ -115,7 +115,7 @@ function ProjectCard({ project }: { project: Project }) {
 
       <p className="mt-3 text-sm leading-relaxed text-neutral-500">{project.description}</p>
 
-      <div className="mt-4 flex items-center justify-between text-xs">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-xs">
         {project.caseStudyUrl === 'soon' ? (
           <ComingSoon title={project.title} />
         ) : project.caseStudyUrl ? (
@@ -137,18 +137,30 @@ function ProjectCard({ project }: { project: Project }) {
         ) : (
           <span />
         )}
-        {project.liveUrl === 'soon' ? (
-          <ComingSoon to={project.locked ? caseStudyPath : undefined} title={project.title} />
-        ) : project.liveUrl && (
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="font-medium text-black transition-opacity hover:opacity-60"
-          >
-            View Live Project ↗
-          </a>
-        )}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          {project.liveUrl === 'soon' ? (
+            <ComingSoon to={project.locked ? caseStudyPath : undefined} title={project.title} />
+          ) : project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-black transition-opacity hover:opacity-60"
+            >
+              View Live Project ↗
+            </a>
+          )}
+          {project.playUrl && (
+            <a
+              href={project.playUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-black transition-opacity hover:opacity-60"
+            >
+              Get On Play Store ↗
+            </a>
+          )}
+        </div>
       </div>
     </article>
   )

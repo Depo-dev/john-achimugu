@@ -63,8 +63,32 @@ export default function ProjectDetail() {
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
           <h1 className="text-4xl font-semibold text-black md:text-5xl">{study.title}</h1>
-          {study.stores ? (
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
+            {study.liveUrl === 'soon' ? (
+              <span className="flex items-center gap-2 rounded-full bg-neutral-100 px-3.5 py-1.5 text-sm text-neutral-400">
+                <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                  <rect x="3" y="7" width="10" height="7" rx="1.5" />
+                  <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
+                </svg>
+                Coming Soon
+              </span>
+            ) : (
+              study.liveUrl && (
+                <a
+                  href={study.liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+                >
+                  <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
+                    <circle cx="8" cy="8" r="6.5" />
+                    <path d="M1.5 8h13M8 1.5c1.8 2 2.6 4.1 2.6 6.5S9.8 12.5 8 14.5M8 1.5C6.2 3.5 5.4 5.6 5.4 8s.8 4.5 2.6 6.5" />
+                  </svg>
+                  View Live Site
+                </a>
+              )
+            )}
+            {study.stores?.apple && (
               <a
                 href={study.stores.apple}
                 target="_blank"
@@ -76,6 +100,8 @@ export default function ProjectDetail() {
                 </svg>
                 Get On Apple Store
               </a>
+            )}
+            {study.stores?.play && (
               <a
                 href={study.stores.play}
                 target="_blank"
@@ -87,31 +113,8 @@ export default function ProjectDetail() {
                 </svg>
                 Get On Play Store
               </a>
-            </div>
-          ) : study.liveUrl === 'soon' ? (
-            <span className="flex items-center gap-2 rounded-full bg-neutral-100 px-3.5 py-1.5 text-sm text-neutral-400">
-              <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-                <rect x="3" y="7" width="10" height="7" rx="1.5" />
-                <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
-              </svg>
-              Coming Soon
-            </span>
-          ) : (
-            study.liveUrl && (
-              <a
-                href={study.liveUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
-              >
-                <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
-                  <circle cx="8" cy="8" r="6.5" />
-                  <path d="M1.5 8h13M8 1.5c1.8 2 2.6 4.1 2.6 6.5S9.8 12.5 8 14.5M8 1.5C6.2 3.5 5.4 5.6 5.4 8s.8 4.5 2.6 6.5" />
-                </svg>
-                View Live Site
-              </a>
-            )
-          )}
+            )}
+          </div>
         </div>
       </section>
 

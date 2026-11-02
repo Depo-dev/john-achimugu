@@ -13,6 +13,7 @@ export type Project = {
   video?: { src: string; poster: string }
   caseStudyUrl?: LinkState
   liveUrl?: LinkState
+  playUrl?: string
   // Case study sits behind the password page.
   locked?: boolean
 }
@@ -44,7 +45,7 @@ export const PROJECTS: Project[] = [
     categories: ['Websites', 'Web Apps'],
     image: '/images/projects/floatmerchant.webp',
     caseStudyUrl: '/projects/floatmerchant',
-    liveUrl: '#',
+    liveUrl: 'https://www.floatmerchant.com/',
   },
   {
     title: 'Reset VR',
@@ -56,7 +57,7 @@ export const PROJECTS: Project[] = [
     video: { src: '/images/projects/resetvr.mp4', poster: '/images/projects/resetvr-poster.webp' },
     caseStudyUrl: '/projects/reset-vr',
     locked: true,
-    liveUrl: 'soon',
+    liveUrl: 'https://myluvira.com/reset-vr',
   },
   {
     title: 'Luvira',
@@ -68,7 +69,7 @@ export const PROJECTS: Project[] = [
     image: '/images/projects/luvira.webp',
     caseStudyUrl: '/projects/luvira',
     locked: true,
-    liveUrl: 'soon',
+    liveUrl: 'https://myluvira.com/community#the-problem',
   },
   {
     title: 'DartX',
@@ -90,7 +91,7 @@ export const PROJECTS: Project[] = [
     categories: ['Mobile Apps'],
     image: '/images/projects/networkx.webp',
     caseStudyUrl: '/projects/networkx-ai',
-    liveUrl: '#',
+    liveUrl: 'https://www.networkx.ai/',
   },
   {
     title: 'Team1',
@@ -110,7 +111,7 @@ export const PROJECTS: Project[] = [
     categories: ['Websites'],
     image: '/images/projects/nskai.webp',
     caseStudyUrl: '/projects/nsk-ai',
-    liveUrl: '#',
+    liveUrl: 'https://www.nskai.org/',
   },
   {
     title: 'Spherre',
@@ -120,7 +121,7 @@ export const PROJECTS: Project[] = [
     categories: ['Websites'],
     image: '/images/projects/spherre.webp',
     caseStudyUrl: '/projects/spherre',
-    liveUrl: '#',
+    liveUrl: 'https://www.spherre.xyz/',
   },
   {
     title: 'Oneway',
@@ -131,7 +132,7 @@ export const PROJECTS: Project[] = [
     categories: ['Mobile Apps', 'Web Apps', 'POS'],
     image: '/images/projects/oneway.webp',
     caseStudyUrl: '/projects/oneway',
-    liveUrl: '#',
+    playUrl: 'https://play.google.com/store/apps/details?id=com.tryoneway&pcampaignid=web_share',
   },
   {
     title: 'Ibx Exchange',
@@ -141,7 +142,8 @@ export const PROJECTS: Project[] = [
     categories: ['Web Apps', 'Mobile Apps'],
     image: '/images/projects/ibx.webp',
     caseStudyUrl: '/projects/ibx-exchange',
-    liveUrl: '#',
+    liveUrl: 'https://www.ibxp2p.com/',
+    playUrl: 'https://play.google.com/store/apps/details?id=com.ibx&pcampaignid=web_share',
   },
   // Gallery-only projects (no case study page). Descriptions are drafts based on the screenshots.
   {
@@ -159,6 +161,7 @@ export const PROJECTS: Project[] = [
     categories: ['Mobile Apps'],
     image: '/images/projects/chillr.webp',
     caseStudyUrl: '/projects/chillr',
+    playUrl: 'https://play.google.com/store/apps/details?id=com.chillr&pcampaignid=web_share',
   },
   {
     title: 'TokenGiver',
@@ -167,6 +170,7 @@ export const PROJECTS: Project[] = [
     categories: ['Web Apps'],
     image: '/images/projects/tokengiver.webp',
     caseStudyUrl: '/projects/tokengiver',
+    liveUrl: 'https://token-giver-7u11.vercel.app/',
   },
   {
     title: 'StarkBid',
@@ -174,6 +178,7 @@ export const PROJECTS: Project[] = [
     description: 'StarkBid is an NFT marketplace for exploring collections, bidding in auctions, staking, and minting.',
     categories: ['Web Apps'],
     image: '/images/projects/starkbid.webp',
+    liveUrl: 'https://starkbid.com/',
   },
   {
     title: 'Rider',
@@ -182,6 +187,7 @@ export const PROJECTS: Project[] = [
     categories: ['Mobile Apps'],
     image: '/images/projects/rider.webp',
     caseStudyUrl: '/projects/rider-app',
+    playUrl: 'https://play.google.com/store/apps/details?id=com.OnewayRider&pcampaignid=web_share',
   },
   {
     title: 'PHIND',
@@ -190,6 +196,7 @@ export const PROJECTS: Project[] = [
     categories: ['Web Apps'],
     image: '/images/projects/phind.webp',
     caseStudyUrl: '/projects/phind',
+    playUrl: 'https://play.google.com/store/apps/details?id=com.phind.PhindMobileApp&pcampaignid=web_share',
   },
   {
     title: 'HeyChat',

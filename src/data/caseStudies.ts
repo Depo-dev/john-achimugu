@@ -6,7 +6,7 @@ export type CaseStudy = {
   slug: string
   title: string
   liveUrl?: string | 'soon'
-  stores?: { apple: string; play: string }
+  stores?: { apple?: string; play?: string }
   media: CaseMedia[]
   meta: { client: string; tools: string[]; year: number; sector: string[]; role: string[] }
   bigQuestion: string[]
@@ -20,7 +20,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: 'reset-vr',
     title: 'Reset VR',
-    liveUrl: '#',
+    liveUrl: 'https://myluvira.com/reset-vr',
     media: [
       { type: 'video', src: `${DIR}/resetvr.mp4`, poster: `${DIR}/resetvr-poster.webp`, alt: 'Reset VR logo animation' },
       { type: 'video', src: `${DIR}/case/resetvr-2.mp4`, poster: `${DIR}/case/resetvr-2-poster.webp`, alt: 'Reset VR glass logo animation' },
@@ -74,7 +74,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: 'floatmerchant',
     title: 'FloatMerchant',
-    liveUrl: '#',
+    liveUrl: 'https://www.floatmerchant.com/',
     media: [{ type: 'image', src: `${DIR}/case/floatmerchant-1.webp`, alt: 'FloatMerchant landing page' }, { type: 'image', src: `${DIR}/case/floatmerchant-2.webp`, alt: 'FloatMerchant financing products' }, { type: 'image', src: `${DIR}/case/floatmerchant-3.webp`, alt: 'FloatMerchant illustration set' }],
     meta: {
       client: 'FloatMerchant',
@@ -102,7 +102,7 @@ CASE_STUDIES.push(
   {
     slug: 'oneway',
     title: 'Oneway',
-    liveUrl: '#',
+    stores: { play: 'https://play.google.com/store/apps/details?id=com.tryoneway&pcampaignid=web_share' },
     media: [{ type: 'image', src: `${DIR}/oneway.webp`, alt: 'Oneway campaign posters' }],
     meta: {
       client: 'Oneway',
@@ -144,7 +144,7 @@ CASE_STUDIES.push(
   {
     slug: 'networkx-ai',
     title: 'NetworkX.AI',
-    liveUrl: '#',
+    liveUrl: 'https://www.networkx.ai/',
     media: [{ type: 'image', src: `${DIR}/networkx.webp`, alt: 'NetworkX.AI affiliate program screen' }],
     meta: {
       client: 'Prudiva',
@@ -160,7 +160,8 @@ CASE_STUDIES.push(
   {
     slug: 'ibx-exchange',
     title: 'Ibx Exchange',
-    liveUrl: '#',
+    liveUrl: 'https://www.ibxp2p.com/',
+    stores: { play: 'https://play.google.com/store/apps/details?id=com.ibx&pcampaignid=web_share' },
     media: [{ type: 'image', src: `${DIR}/ibx.webp`, alt: 'Ibx wallet app on a phone' }],
     meta: {
       client: 'Ibx Exchange',
@@ -184,7 +185,7 @@ CASE_STUDIES.push(
   {
     slug: 'luvira',
     title: 'Luvira',
-    liveUrl: 'soon',
+    liveUrl: 'https://myluvira.com/community#the-problem',
     media: [{ type: 'image', src: `${DIR}/luvira.webp`, alt: 'Luvira app screens' }, { type: 'image', src: `${DIR}/case/luvira-2.webp`, alt: 'Luvira memory and avatar screens' }],
     meta: {
       client: 'Luvira',
@@ -228,7 +229,7 @@ CASE_STUDIES.push(
   {
     slug: 'nsk-ai',
     title: 'NSK.AI',
-    liveUrl: '#',
+    liveUrl: 'https://www.nskai.org/',
     media: [{ type: 'image', src: `${DIR}/nskai.webp`, alt: 'NSK.AI website' }],
     meta: {
       client: 'NSK.AI',
@@ -250,7 +251,7 @@ CASE_STUDIES.push(
   {
     slug: 'spherre',
     title: 'Spherre',
-    liveUrl: '#',
+    liveUrl: 'https://www.spherre.xyz/',
     media: [{ type: 'image', src: `${DIR}/spherre.webp`, alt: 'Spherre website' }],
     meta: {
       client: 'Spherre',
@@ -319,7 +320,7 @@ CASE_STUDIES.push(
   {
     slug: 'chillr',
     title: 'Chillr',
-    liveUrl: '#',
+    stores: { play: 'https://play.google.com/store/apps/details?id=com.chillr&pcampaignid=web_share' },
     media: [img('chillr.webp', 'Chillr onboarding screen')],
     meta: {
       client: 'Vivvaa Inc',
@@ -341,7 +342,7 @@ CASE_STUDIES.push(
   {
     slug: 'tokengiver',
     title: 'TokenGiver',
-    liveUrl: '#',
+    liveUrl: 'https://token-giver-7u11.vercel.app/',
     media: [img('tokengiver.webp', 'TokenGiver campaign setup screen')],
     meta: {
       client: 'TokenGiver',
@@ -363,7 +364,7 @@ CASE_STUDIES.push(
   {
     slug: 'phind',
     title: 'PHIND',
-    liveUrl: '#',
+    stores: { play: 'https://play.google.com/store/apps/details?id=com.phind.PhindMobileApp&pcampaignid=web_share' },
     media: [img('phind.webp', 'PHIND opportunities dashboard')],
     meta: {
       client: 'PHIND',
@@ -385,7 +386,7 @@ CASE_STUDIES.push(
   {
     slug: 'rider-app',
     title: 'Rider App',
-    liveUrl: '#',
+    stores: { play: 'https://play.google.com/store/apps/details?id=com.OnewayRider&pcampaignid=web_share' },
     media: [img('rider.webp', 'Oneway Rider App screens')],
     meta: {
       client: 'Vivvaa Inc',
