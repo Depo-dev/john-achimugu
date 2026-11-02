@@ -101,7 +101,6 @@ export const PROJECTS: Project[] = [
     categories: ['Websites'],
     image: '/images/projects/team1.webp',
     caseStudyUrl: '/projects/team1-africa',
-    liveUrl: '#',
   },
   {
     title: 'NSK.AI',
@@ -121,7 +120,6 @@ export const PROJECTS: Project[] = [
     categories: ['Websites'],
     image: '/images/projects/spherre.webp',
     caseStudyUrl: '/projects/spherre',
-    liveUrl: 'https://www.spherre.xyz/',
   },
   {
     title: 'Oneway',

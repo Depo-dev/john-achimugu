@@ -207,7 +207,6 @@ CASE_STUDIES.push(
   {
     slug: 'team1-africa',
     title: 'Team 1 Africa',
-    liveUrl: '#',
     media: [{ type: 'image', src: `${DIR}/team1.webp`, alt: 'Avalanche x Team1 logo' }],
     meta: {
       client: 'Team 1 Africa',
@@ -251,7 +250,6 @@ CASE_STUDIES.push(
   {
     slug: 'spherre',
     title: 'Spherre',
-    liveUrl: 'https://www.spherre.xyz/',
     media: [{ type: 'image', src: `${DIR}/spherre.webp`, alt: 'Spherre website' }],
     meta: {
       client: 'Spherre',
@@ -281,7 +279,6 @@ CASE_STUDIES.push(
   {
     slug: 'attend',
     title: 'Attend',
-    liveUrl: '#',
     media: [img('attend.webp', 'Attend event page')],
     meta: {
       client: 'Attend',
@@ -408,7 +405,6 @@ CASE_STUDIES.push(
   {
     slug: 'helpmee',
     title: 'Helpmee',
-    stores: { apple: '#', play: '#' },
     media: [img('helpmee.webp', 'Helpmee app')],
     meta: {
       client: 'Helpmee',
