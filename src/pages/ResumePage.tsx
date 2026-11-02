@@ -1,5 +1,6 @@
 import Asterisk from '../components/Asterisk'
 import Contact from '../components/Contact'
+import StickerMat from '../components/StickerMat'
 import { useLandOnSection } from '../lib/navContext'
 
 const DIR = '/images/resume'
@@ -24,16 +25,7 @@ export default function ResumePage() {
       </section>
 
       <section className="site-container border-b border-neutral-800 p-4 md:p-5">
-        <div className="relative overflow-hidden">
-          <img src={`${DIR}/mat.webp`} alt="" aria-hidden width={2400} height={751} className="h-auto w-full" />
-          <img
-            src={`${DIR}/collage.webp`}
-            alt="Sticker collage around a photo of John"
-            width={2400}
-            height={857}
-            className="absolute inset-x-[2%] top-1/2 h-auto w-[96%] -translate-y-1/2"
-          />
-        </div>
+        <StickerMat />
       </section>
 
       <section className="site-container border-b border-neutral-800 px-6 py-8 md:px-10">
