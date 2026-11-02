@@ -16,6 +16,34 @@ const TESTIMONIALS: Testimonial[] = [
     handle: '@GodsfavourLewechi',
     role: 'Mobile Software Engineer at Dayout',
   },
+  {
+    quote:
+      'John is efficient and works quickly. He communicates promptly if he is unable to complete a task immediately. He is also highly skilled at what he does and is receptive to feedback, making necessary corrections effectively.',
+    name: 'Ijeoma Ubochi',
+    handle: '@ijeomademerkins',
+    role: 'Content Creator',
+  },
+  {
+    quote:
+      "John is my go-to for any design work, not only because of his incredible talent but also for his reliability. Having worked with him, I can confidently say he's not just an outstanding designer, but also a disciplined and trustworthy professional. He consistently delivers on time, and that level of dependability is something I value above all else.",
+    name: 'David Ejere',
+    handle: '@Doomsday_codes',
+    role: 'Co-Founder, Frontend Developer',
+  },
+  {
+    quote:
+      "I worked with John as part of the Ingressive For Good circle programme and it was a pleasant experience working with him. He took over as the Lead of I4G UNN circle and he made sure to grow the community by hosting events that impacted the skills of community members. He's also a talented designer with attention to detail and is fond of delivering his deliverables on or before time. I would always recommend him as I have seen he is a value add to any team he joins.",
+    name: 'Daniel Anomfueme',
+    handle: '@lifeofdanel',
+    role: 'Contributor at VitaDAO, DeSci Africa',
+  },
+  {
+    quote:
+      "I had the pleasure of working with John Achimugu for a year at IBX Exchange, where I served as the Brand Manager, and he was a Product Designer. John consistently demonstrated an exceptional talent for creating unique and innovative designs that perfectly aligned with our brand's vision. His attention to detail, combined with his creativity, made his work stand out, and he was always able to deliver high-quality outputs, even under tight deadlines. In addition to his technical skills, John is a great team player. He was always willing to collaborate across departments, ensuring smooth project execution. His positive attitude, reliability, and dedication to excellence made him a valuable asset to our team, and I have no doubt he will continue to contribute meaningfully in any future endeavors.",
+    name: 'Urenna Ochulo',
+    handle: '@urenna_ochulo',
+    role: 'Brand and Corporate Communications at Fidelity Pension Managers Limited',
+  },
 ]
 
 const SLIDE_MS = 7000
