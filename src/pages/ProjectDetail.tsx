@@ -1,7 +1,8 @@
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import Contact from '../components/Contact'
 import MediaCarousel from '../components/MediaCarousel'
 import { findCaseStudy } from '../data/caseStudies'
+import { isProjectLocked } from '../data/projects'
 import { useLandOnSection } from '../lib/navContext'
 
 function MetaColumn({ label, items }: { label: string; items: (string | number)[] }) {
@@ -34,8 +35,10 @@ export default function ProjectDetail() {
   useLandOnSection()
   const { slug } = useParams()
   const navigate = useNavigate()
+  const { state } = useLocation()
   const study = findCaseStudy(slug)
   if (!study) return <Navigate to="/projects" replace />
+  if (isProjectLocked(slug) && !state?.unlocked) return <Navigate to={`/projects/${slug}/locked`} replace />
 
   function goBack() {
     if (window.history.state?.idx > 0) navigate(-1)

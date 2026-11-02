@@ -13,6 +13,8 @@ export type Project = {
   video?: { src: string; poster: string }
   caseStudyUrl?: LinkState
   liveUrl?: LinkState
+  // Case study sits behind the password page.
+  locked?: boolean
 }
 
 export const CATEGORIES: ProjectCategory[] = ['Web Apps', 'Mobile Apps', 'Websites', 'POS', 'VR']
@@ -30,6 +32,7 @@ export const PROJECTS: Project[] = [
     categories: ['Web Apps'],
     image: '/images/projects/prudiva.webp',
     caseStudyUrl: '/projects/prudiva',
+    locked: true,
     liveUrl: 'soon',
   },
   {
@@ -52,6 +55,7 @@ export const PROJECTS: Project[] = [
     categories: ['VR'],
     video: { src: '/images/projects/resetvr.mp4', poster: '/images/projects/resetvr-poster.webp' },
     caseStudyUrl: '/projects/reset-vr',
+    locked: true,
     liveUrl: 'soon',
   },
   {
@@ -63,6 +67,7 @@ export const PROJECTS: Project[] = [
     categories: ['Mobile Apps'],
     image: '/images/projects/luvira.webp',
     caseStudyUrl: '/projects/luvira',
+    locked: true,
     liveUrl: 'soon',
   },
   {
@@ -74,6 +79,7 @@ export const PROJECTS: Project[] = [
     categories: ['Mobile Apps', 'Web Apps'],
     image: '/images/projects/dartx.webp',
     caseStudyUrl: '/projects/dartx',
+    locked: true,
     liveUrl: 'soon',
   },
   {
@@ -202,3 +208,7 @@ export const PROJECTS: Project[] = [
     caseStudyUrl: '/projects/helpmee',
   },
 ]
+
+export function isProjectLocked(slug: string | undefined) {
+  return PROJECTS.some((p) => p.locked && p.caseStudyUrl === `/projects/${slug}`)
+}

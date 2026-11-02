@@ -2,11 +2,13 @@ import { createContext, useContext, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
 export type GoTo = (id: string) => void
+export type GoToPage = (path: string, label: string) => void
 
 // Fired on window with detail 'start' | 'end' around every page transition.
 export const NAV_TRANSITION_EVENT = 'site-nav-transition'
 
 export const NavContext = createContext<GoTo>(() => {})
+export const PageNavContext = createContext<GoToPage>(() => {})
 
 const PAGE_ROUTES: Record<string, string> = {
   home: '/',
@@ -36,6 +38,10 @@ export function scrollToSection(id: string) {
 
 export function useSiteNav() {
   return useContext(NavContext)
+}
+
+export function useGoToPage() {
+  return useContext(PageNavContext)
 }
 
 // Pages call this on mount to land on the section a cross-page link asked for.

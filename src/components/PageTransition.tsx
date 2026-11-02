@@ -46,7 +46,7 @@ const PageTransition = forwardRef<PageTransitionHandle>((_, ref) => {
     >
       <span
         ref={labelRef}
-        className="font-moonwalk text-4xl uppercase tracking-wide text-black md:text-6xl"
+        className="font-moonwalk text-[min(2.25rem,9.5vw)] uppercase tracking-wide text-black md:text-6xl"
       >
         {label}
       </span>

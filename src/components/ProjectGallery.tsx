@@ -1,20 +1,50 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, type LinkProps } from 'react-router-dom'
 import Asterisk from './Asterisk'
 import { CATEGORIES, PROJECTS, type Project, type ProjectCategory } from '../data/projects'
+import { useGoToPage } from '../lib/navContext'
 
 type Filter = 'All' | ProjectCategory
 
 const prefersReducedMotion =
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-function ComingSoon() {
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+      <rect x="3" y="7" width="10" height="7" rx="1.5" />
+      <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
+    </svg>
+  )
+}
+
+function ProjectLink({ to, title, ...props }: LinkProps & { to: string; title: string }) {
+  const goToPage = useGoToPage()
+  return (
+    <Link
+      {...props}
+      to={to}
+      onClick={(e) => {
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+        e.preventDefault()
+        goToPage(to, title)
+      }}
+    />
+  )
+}
+
+function ComingSoon({ to, title }: { to?: string; title: string }) {
+  if (to) {
+    return (
+      <ProjectLink to={to} title={title} className="flex items-center gap-1.5 text-neutral-400 transition-colors hover:text-black">
+        <LockIcon />
+        Coming Soon
+      </ProjectLink>
+    )
+  }
   return (
     <span className="flex items-center gap-1.5 text-neutral-400">
-      <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-        <rect x="3" y="7" width="10" height="7" rx="1.5" />
-        <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
-      </svg>
+      <LockIcon />
       Coming Soon
     </span>
   )
@@ -53,13 +83,14 @@ function ProjectCard({ project }: { project: Project }) {
   return (
     <article className="flex flex-col">
       {caseStudyPath ? (
-        <Link
+        <ProjectLink
           to={caseStudyPath}
+          title={project.title}
           aria-label={`${project.title} case study`}
           className="block transition-transform duration-300 hover:-translate-y-1"
         >
           {media}
-        </Link>
+        </ProjectLink>
       ) : (
         media
       )}
@@ -68,9 +99,9 @@ function ProjectCard({ project }: { project: Project }) {
         <Asterisk className="h-3.5 w-3.5 bg-black" />
         <h3 className="text-base font-semibold text-black">
           {caseStudyPath ? (
-            <Link to={caseStudyPath} className="hover:underline">
+            <ProjectLink to={caseStudyPath} title={project.title} className="hover:underline">
               {project.title}
-            </Link>
+            </ProjectLink>
           ) : (
             project.title
           )}
@@ -86,23 +117,28 @@ function ProjectCard({ project }: { project: Project }) {
 
       <div className="mt-4 flex items-center justify-between text-xs">
         {project.caseStudyUrl === 'soon' ? (
-          <ComingSoon />
+          <ComingSoon title={project.title} />
         ) : project.caseStudyUrl ? (
-          <Link
+          <ProjectLink
             to={project.caseStudyUrl}
+            title={project.title}
             className="flex items-center gap-1.5 font-medium text-black transition-opacity hover:opacity-60"
           >
-            <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-              <path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8 12.1 12.5 8 12.5 1.5 8 1.5 8z" />
-              <circle cx="8" cy="8" r="2" />
-            </svg>
+            {project.locked ? (
+              <LockIcon />
+            ) : (
+              <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                <path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8 12.1 12.5 8 12.5 1.5 8 1.5 8z" />
+                <circle cx="8" cy="8" r="2" />
+              </svg>
+            )}
             View Case Study
-          </Link>
+          </ProjectLink>
         ) : (
           <span />
         )}
         {project.liveUrl === 'soon' ? (
-          <ComingSoon />
+          <ComingSoon to={project.locked ? caseStudyPath : undefined} title={project.title} />
         ) : project.liveUrl && (
           <a
             href={project.liveUrl}

@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useLocation } from 'react-router-dom'
 import { activeIdFor, NAV_TRANSITION_EVENT, useSiteNav } from '../lib/navContext'
+import { isLockPage } from '../lib/projectLock'
 
 const NAV_ITEMS = [
   { id: 'home', label: 'home.' },
@@ -28,6 +29,7 @@ export default function Navbar() {
   const goTo = useSiteNav()
   const { pathname } = useLocation()
   const activeId = activeIdFor(pathname) ?? spiedId
+  const overImage = isLockPage(pathname)
   const lastY = useRef(0)
 
   const shellRef = useRef<HTMLDivElement>(null)
@@ -217,14 +219,14 @@ export default function Navbar() {
       {/* The morphing shell */}
       <div
         ref={shellRef}
-        className={`fixed z-[65] overflow-hidden bg-white ${collapsed ? '' : 'dark:bg-black'}`}
+        className={`fixed z-[65] overflow-hidden ${overImage ? 'bg-transparent' : `bg-white ${collapsed ? '' : 'dark:bg-black'}`}`}
       >
         {/* Expanded bar content */}
         <div
           ref={expandedWrapRef}
           className="absolute inset-0 font-epilogue"
         >
-          <div className="site-container flex h-full items-center justify-between border-x border-b border-neutral-200 px-6 dark:border-neutral-800 md:px-10">
+          <div className={`site-container flex h-full items-center justify-between px-6 md:px-10 ${overImage ? '' : 'border-x border-b border-neutral-200 dark:border-neutral-800'}`}>
             <button
               type="button"
               aria-label="John Achimugu — home"
@@ -246,7 +248,7 @@ export default function Navbar() {
                     >
                       <span
                         aria-hidden
-                        className={`inline-block h-3 w-3 shrink-0 ${isActive ? 'bg-lime' : 'bg-neutral-400'}`}
+                        className={`inline-block h-3 w-3 shrink-0 ${overImage ? 'bg-white' : isActive ? 'bg-lime' : 'bg-neutral-400'}`}
                         style={{
                           WebkitMaskImage: 'url(/images/asterisk.svg)',
                           maskImage: 'url(/images/asterisk.svg)',
@@ -256,7 +258,7 @@ export default function Navbar() {
                           maskRepeat: 'no-repeat',
                         }}
                       />
-                      <span className={isActive ? 'font-semibold text-black dark:text-white' : 'text-neutral-500'}>
+                      <span className={isActive ? 'font-semibold text-black dark:text-white' : overImage ? 'text-white/85' : 'text-neutral-500'}>
                         {item.label}
                       </span>
                     </button>
@@ -268,7 +270,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => goTo('contact')}
-              className="hidden items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 md:flex dark:bg-neutral-800 dark:hover:bg-neutral-700"
+              className={`hidden items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white transition-colors md:flex ${overImage ? 'bg-white/20 hover:bg-white/30' : 'bg-black hover:bg-neutral-800 dark:bg-neutral-800 dark:hover:bg-neutral-700'}`}
             >
               <img src="/images/sms.svg" alt="" className="h-4 w-4 invert" />
               Let's Talk
@@ -278,7 +280,7 @@ export default function Navbar() {
               type="button"
               aria-label="Open menu"
               onClick={openMenuFromBar}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-black transition-colors hover:bg-neutral-800 md:hidden dark:bg-neutral-800"
+              className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors md:hidden ${overImage ? 'bg-white/20 hover:bg-white/30' : 'bg-black hover:bg-neutral-800 dark:bg-neutral-800'}`}
             >
               <img src="/images/menu.svg" alt="" className="h-5 w-5" />
             </button>
