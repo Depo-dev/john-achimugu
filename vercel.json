@@ -1,3 +1,10 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "john-achimugu-amber.vercel.app" }],
+      "destination": "https://johnachimugu.work/$1",
+      "permanent": true
+    }
+  ]
 }

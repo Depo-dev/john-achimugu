@@ -1,17 +1,12 @@
-import { useEffect, useState } from 'react'
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { useEffect, useLayoutEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import Preloader from './components/Preloader'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import Home from './pages/Home'
-import Life from './pages/Life'
-import ProjectsPage from './pages/ProjectsPage'
-import ProjectDetail from './pages/ProjectDetail'
-import LockedProject from './pages/LockedProject'
-import ContactPage from './pages/ContactPage'
-import ResumePage from './pages/ResumePage'
+import AppRoutes from './AppRoutes'
 import { NavProvider } from './lib/navigation'
 import { isLockPage } from './lib/projectLock'
+import { applySeo, seoFor } from './lib/seo'
 import { useLenis } from './lib/useLenis'
 
 function App() {
@@ -20,6 +15,12 @@ function App() {
   useLenis()
   const { pathname } = useLocation()
   const lockPage = isLockPage(pathname)
+  useLayoutEffect(() => {
+    document.documentElement.classList.add('app-ready')
+  }, [])
+  useEffect(() => {
+    applySeo(seoFor(pathname))
+  }, [pathname])
   useEffect(() => {
     document.documentElement.classList.toggle('theme-dark', pathname === '/resume' || lockPage)
   }, [pathname, lockPage])
@@ -37,16 +38,7 @@ function App() {
         />
       )}
       <main className="bg-white dark:bg-black">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/life" element={<Life />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/projects/:slug" element={<ProjectDetail />} />
-          <Route path="/projects/:slug/locked" element={<LockedProject />} />
-          <Route path="/resume" element={<ResumePage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <AppRoutes />
       </main>
       {!lockPage && <Footer />}
     </NavProvider>

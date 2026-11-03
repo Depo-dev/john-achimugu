@@ -5,10 +5,14 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>john-achimugu</title>
+    <meta name="theme-color" content="#000000" />
+    <!--seo--><title>John Achimugu | Product Designer</title><!--/seo-->
+    <!-- Matches the preloader's black so the static HTML doesn't flash before it mounts. -->
+    <style>html:not(.app-ready) body::before{content:"";position:fixed;inset:0;z-index:100;background:#000}</style>
+    <noscript><style>html:not(.app-ready) body::before{display:none}</style></noscript>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

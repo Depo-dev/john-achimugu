@@ -1,7 +1,7 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from 'react'
 import gsap from 'gsap'
 import { useLocation } from 'react-router-dom'
-import { activeIdFor, NAV_TRANSITION_EVENT, useSiteNav } from '../lib/navContext'
+import { activeIdFor, NAV_TRANSITION_EVENT, routeFor, useSiteNav } from '../lib/navContext'
 import { isLockPage } from '../lib/projectLock'
 
 const NAV_ITEMS = [
@@ -189,6 +189,12 @@ export default function Navbar() {
     goTo(id)
   }
 
+  function followLink(e: MouseEvent, id: string) {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    e.preventDefault()
+    scrollTo(id)
+  }
+
   // Small screens: the bar hamburger morphs the bar into the pill with its menu open.
   function openMenuFromBar() {
     setCollapsed(true)
@@ -227,23 +233,23 @@ export default function Navbar() {
           className="absolute inset-0 font-epilogue"
         >
           <div className={`site-container flex h-full items-center justify-between px-6 md:px-10 ${overImage ? '' : 'border-x border-b border-neutral-200 dark:border-neutral-800'}`}>
-            <button
-              type="button"
+            <a
+              href="/"
               aria-label="John Achimugu — home"
-              onClick={() => scrollTo('home')}
+              onClick={(e) => followLink(e, 'home')}
               className="font-moonwalk text-lg tracking-wide text-black dark:text-white"
             >
               JOHN ACHIMUGU
-            </button>
+            </a>
 
             <ul className="hidden items-center gap-7 md:flex">
               {NAV_ITEMS.filter((item) => item.id !== 'home').map((item) => {
                 const isActive = item.id === activeId
                 return (
                   <li key={item.id}>
-                    <button
-                      type="button"
-                      onClick={() => scrollTo(item.id)}
+                    <a
+                      href={routeFor(item.id)}
+                      onClick={(e) => followLink(e, item.id)}
                       className="flex items-center gap-1.5 text-sm"
                     >
                       <span
@@ -261,7 +267,7 @@ export default function Navbar() {
                       <span className={isActive ? 'font-semibold text-black dark:text-white' : overImage ? 'text-white/85' : 'text-neutral-500'}>
                         {item.label}
                       </span>
-                    </button>
+                    </a>
                   </li>
                 )
               })}
@@ -290,14 +296,14 @@ export default function Navbar() {
         {/* Pill content */}
         <div ref={pillWrapRef} className="absolute inset-x-0 top-0 p-2.5 font-epilogue opacity-0">
             <div className="relative flex items-center justify-between rounded-full bg-black px-3 py-3">
-              <button
-                type="button"
+              <a
+                href="/"
                 aria-label="John Achimugu — home"
-                onClick={() => scrollTo('home')}
+                onClick={(e) => followLink(e, 'home')}
                 className="flex h-9 items-center px-3 font-moonwalk text-lg tracking-wide text-white"
               >
                 JA
-              </button>
+              </a>
 
               <span className="absolute left-1/2 -translate-x-1/2 rounded-full bg-neutral-700/80 px-4 py-1.5 text-sm font-medium text-white tabular-nums">
                 {progress}%
@@ -324,9 +330,9 @@ export default function Navbar() {
                   const isActive = item.id === activeId
                   return (
                     <li key={item.id}>
-                      <button
-                        type="button"
-                        onClick={() => scrollTo(item.id)}
+                      <a
+                        href={routeFor(item.id)}
+                        onClick={(e) => followLink(e, item.id)}
                         className="flex items-center gap-2.5 text-left"
                       >
                         <span
@@ -346,7 +352,7 @@ export default function Navbar() {
                         <span className={isActive ? 'font-semibold text-black' : 'text-black'}>
                           {item.label}
                         </span>
-                      </button>
+                      </a>
                     </li>
                   )
                 })}

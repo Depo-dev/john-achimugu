@@ -87,7 +87,8 @@ export const PROJECTS: Project[] = [
     title: 'NetworkX.AI',
     tags: TAGS,
     year: 2026,
-    description: PRUDIVA_DESC,
+    description:
+      'NetworkX.AI is an AI-powered smart assistant platform designed to optimize X (Twitter) account management and growth.',
     categories: ['Mobile Apps'],
     image: '/images/projects/networkx.webp',
     caseStudyUrl: '/projects/networkx-ai',
@@ -97,7 +98,8 @@ export const PROJECTS: Project[] = [
     title: 'Team1',
     tags: TAGS,
     year: 2026,
-    description: PRUDIVA_DESC,
+    description:
+      "Team1 Africa is a grassroots movement growing Africa's Web3 ecosystem through education, hands-on events, and global partnerships.",
     categories: ['Websites'],
     image: '/images/projects/team1.webp',
     caseStudyUrl: '/projects/team1-africa',
@@ -106,7 +108,8 @@ export const PROJECTS: Project[] = [
     title: 'NSK.AI',
     tags: TAGS,
     year: 2026,
-    description: PRUDIVA_DESC,
+    description:
+      'NSK.ai is a registered nonprofit building an open, practical AI community across Africa through workshops, research talks, and hands-on projects.',
     categories: ['Websites'],
     image: '/images/projects/nskai.webp',
     caseStudyUrl: '/projects/nsk-ai',
@@ -116,7 +119,8 @@ export const PROJECTS: Project[] = [
     title: 'Spherre',
     tags: TAGS,
     year: 2026,
-    description: PRUDIVA_DESC,
+    description:
+      'Spherre is a secure, scalable, and user-friendly multisig solution built on Starknet that simplifies collaborative wallet management.',
     categories: ['Websites'],
     image: '/images/projects/spherre.webp',
     caseStudyUrl: '/projects/spherre',
